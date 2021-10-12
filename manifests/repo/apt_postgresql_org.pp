@@ -2,11 +2,14 @@
 class postgresql::repo::apt_postgresql_org inherits postgresql::repo {
   include ::apt
 
-  # Here we have tried to replicate the instructions on the PostgreSQL site:
+  # Here we accurately replicated the instructions on the PostgreSQL site:
   #
   # http://www.postgresql.org/download/linux/debian/
   #
-  $default_baseurl = 'https://apt.postgresql.org/pub/repos/apt/'
+  # using http protocol for apt and https for getting the key looks intentional as per
+  # https://www.postgresql.org/message-id/YTn/LRZEtVi38f5G%40msg.df7cb.de
+  #
+  $default_baseurl = 'http://apt.postgresql.org/pub/repos/apt/'
 
   $_baseurl = pick($postgresql::repo::baseurl, $default_baseurl)
 
