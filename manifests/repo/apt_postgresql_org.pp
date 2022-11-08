@@ -11,7 +11,13 @@ class postgresql::repo::apt_postgresql_org inherits postgresql::repo {
   #
   $default_baseurl = 'http://apt.postgresql.org/pub/repos/apt/'
 
-  $_baseurl = pick($postgresql::repo::baseurl, $default_baseurl)
+  if $lsbdistcodename == 'stretch' {
+    $_baseurl = 'https://apt-archive.postgresql.org/pub/repos/apt'
+    $repos = "main"
+       } else {
+    $_baseurl = pick($postgresql::repo::baseurl, $default_baseurl)
+    $repos = "main ${postgresql::repo::version}"
+  }
 
   apt::pin { 'apt_postgresql_org':
     originator => 'apt.postgresql.org',
