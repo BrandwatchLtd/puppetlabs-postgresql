@@ -75,17 +75,17 @@ define postgresql::server::config_entry (
   )) {
     Postgresql_conf {
       notify => Class['postgresql::server::reload'],
-      notify { "KALIDEBUG: postgresql server reload issued": }
+      notify { "KALIDEBUG: postgresql server reload issued for config entry ${name}": }
     }
   } elsif $postgresql::server::service_restart_on_change {
     Postgresql_conf {
       notify => Class['postgresql::server::service'],
-      notify { "KALIDEBUG: postgresql server server notified (restart on change is true)": }
+      notify { "KALIDEBUG: postgresql server server notified (restart on change is true) for config entry ${name}": }
     }
   } else {
     Postgresql_conf {
       before => Class['postgresql::server::service'],
-      notify { "KALIDEBUG: postgresql server service before (restart on change is false)": }
+      notify { "KALIDEBUG: postgresql server service before (restart on change is false) for config entry ${name}": }
     }
   }
 
