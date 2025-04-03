@@ -12,13 +12,16 @@ Puppet::Type.type(:postgresql_conf).provide(
   text_line :blank, match: %r{^\s*$}
 
   record_line :parsed,
-              fields: %w[name value comment],
-              optional: %w[comment],
-              match: %r{^\s*([\w\.]+)\s*=?\s*(.*?)(?:\s*#\s*(.*))?\s*$},
+              fields: ['name', 'value', 'comment'],
+              optional: ['comment'],
+              match: %r{^\s*([\w.]+)\s*=?\s*(.*?)(?:\s*#\s*(.*))?\s*$},
               to_line: proc { |h|
                 # simple string and numeric values don't need to be enclosed in quotes
                 val = if h[:value].is_a?(Numeric)
                         h[:value].to_s
+                      elsif h[:value].is_a?(Array)
+                        # multiple listen_addresses specified as a string containing a comma-speparated list
+                        h[:value].join(', ')
                       else
                         h[:value]
                       end
